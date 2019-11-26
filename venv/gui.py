@@ -1,30 +1,31 @@
-from DES import *
 from tkinter import *
 from tkinter import messagebox
-import binascii
+
+from DES import *
 
 
+# encrypt function
 def encryptText():
-
     try:
-        if(textEntry.get() == "" or keyEntry.get() == ""):
-            messagebox.showerror("error","Must fill text and key")
+        if textEntry.get() == "" or keyEntry.get() == "":
+            messagebox.showerror("error", "Must fill text and key")
         else:
             d = des()
-            cipher = d.encrypt(keyEntry.get(), textEntry.get())
+            cipher = d.encrypt(keyEntry.get(), textEntry.get(), varPadding.get())
             resEntry.delete(0, 'end')
-            resEntry.insert(0,cipher[0])
+            resEntry.insert(0, cipher[0])
             hexEntry.delete(0, 'end')
             hexEntry.insert(0, cipher[1])
     except ValueError as msg:
-            messagebox.showerror("error", msg)
+        messagebox.showerror("error", msg)
     except Exception as msg:
-            messagebox.showerror("error", msg)
+        messagebox.showerror("error", msg)
 
 
+# decrypt function
 def decryptCipher():
-    if(textEntry.get() == "" or keyEntry.get() == ""):
-        messagebox.showerror("error","Must fill text and key")
+    if textEntry.get() == "" or keyEntry.get() == "":
+        messagebox.showerror("error", "Must fill text and key")
     else:
         d = des()
         cipher = d.decrypt(keyEntry.get(), resEntry.get())
@@ -33,6 +34,8 @@ def decryptCipher():
         resEntry.delete(0, 'end')
         resEntry.insert(0, cipher[0])
 
+
+# clear text fields
 def clearFields():
     resEntry.delete(0, 'end')
     hexEntry.delete(0, 'end')
@@ -40,34 +43,39 @@ def clearFields():
     keyEntry.delete(0, 'end')
 
 
-root = Tk(className="DES")
+# main window
+root = Tk(className=" DES")
+varPadding = BooleanVar()
 
-#frames
+# frames
 topFrame = Frame(root)
 topFrame.pack()
 bottomFrame = Frame(root)
 bottomFrame.pack(side=BOTTOM)
 
-#labels
+# labels
 textLabel = Label(topFrame, text="Plain text")
 keyLabel = Label(topFrame, text="Key")
 res = Label(topFrame, text="Cipher")
 hexLabel = Label(topFrame, text="Hex")
 
-#text field
+# text field
 textEntry = Entry(topFrame)
 textEntry.insert(0, "thoughts")
 keyEntry = Entry(topFrame)
-keyEntry.insert(0,  "nonsense")
+keyEntry.insert(0, "nonsense")
 resEntry = Entry(topFrame)
 hexEntry = Entry(topFrame)
 
-#buttons
+# buttons
 encrypt = Button(bottomFrame, text="Encrypt", command=encryptText)
 decrypt = Button(bottomFrame, text="Decrypt", command=decryptCipher)
 clear = Button(bottomFrame, text="Clear", command=clearFields)
 
-#layout
+# checkbox
+chkBtn = Checkbutton(bottomFrame, text="Padding", variable=varPadding)
+
+# layout
 textLabel.grid(row=0)
 keyLabel.grid(row=1)
 res.grid(row=2)
@@ -76,12 +84,9 @@ textEntry.grid(row=0, column=1)
 keyEntry.grid(row=1, column=1)
 resEntry.grid(row=2, column=1)
 hexEntry.grid(row=3, column=1)
+chkBtn.pack(side=LEFT)
 encrypt.pack(side=LEFT)
 decrypt.pack(side=LEFT)
 clear.pack(side=LEFT)
 
-
-
 root.mainloop()
-
-

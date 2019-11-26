@@ -116,12 +116,11 @@ def string_to_bit_array(text):  # Convert a string into a list of bits
 
 
 def bit_array_to_string(array):  # Recreate the string from the bit array
-
     res = ''.join([chr(int(y, 2)) for y in [''.join([str(x) for x in _bytes]) for _bytes in nsplit(array, 8)]])
     return res
 
-def bit_array_to_hex(array):
 
+def bit_array_to_hex(array):  # Convert the bit array to hex
     fullStr = ''.join([str(elem) for elem in array])
     return hex(int(fullStr, 2))
 
@@ -133,9 +132,6 @@ def binvalue(val, bitsize):  # Return the binary value as a string of the given 
     while len(binval) < bitsize:
         binval = "0" + binval  # Add as many 0 as needed to get the wanted size
     return binval
-
-
-
 
 
 def nsplit(s, n):  # Split a list into sublists of size "n"
@@ -191,7 +187,7 @@ class des():
         if padding and action == DECRYPT:
             return self.removePadding(final_res)  # Remove the padding if decrypt and padding is true
         else:
-            return (final_res, res_hex)  # Return the final string of data ciphered/deciphered
+            return final_res, res_hex  # Return the final string of data ciphered/deciphered
 
     def substitute(self, d_e):  # Substitute bytes using SBOX
         subblocks = nsplit(d_e, 6)  # Split bit array into sublist of 6 bits
